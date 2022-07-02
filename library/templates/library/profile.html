@@ -1,0 +1,74 @@
+{% extends "library/layout.html" %}
+
+{% block body %}
+    
+        <div class = "shelf">
+            
+            {% for book in page_obj %}
+
+                <div class = "book" style = "border-style: solid; border-width: 0.5px" >
+                    <div class = "cover-left">
+                        {% if book.cover_image is None %}
+                            <img src="" alt="book's image">
+                        {% else %}
+                            <img src="{{book.cover_image.url}}" alt="book's image" style = "height: 148px; width: 120px;">
+                        {% endif %}    
+                        
+                    </div>  
+                  
+                    <div class = "info-right">
+                        <div class = "info">
+                            <h3 style = "color: blue"> {{book.title}} </h3>
+                            <b>Author: </b>{{book.author}} <br>
+                        </div>
+                        <div class = buttons>
+                            <a href = "{% url 'edit' book.id %}"><button class="btn">Edit<i class="fa fa-edit"></i></button></a> &nbsp;
+                            <button class="btn" onclick = "deletebook(`{{book.id}}`)"><i class="fa fa-trash" ></i>Delete</button>
+                        </div>
+                    </div>
+                        
+                </div>    
+                <br>
+                
+            {% empty %} 
+                No books donated yet.
+            {% endfor %}
+            <br>
+            {% if page_obj %}
+                <div class="pagination" style = "display: flex; justify-content: center;"> 
+                    <ul class="pagination">
+                        {% if page_obj.has_previous %}
+                            <li class="page-item"><a class="page-link" href="?page=1">&laquo;First</a></li>
+                            <li class="page-item"><a class="page-link" href="?page={{ page_obj.previous_page_number }}">Previous</a></li>
+                            
+                        {% endif %}
+                        <li class="page-item disabled">
+                            <a class="page-link" href="#" tabindex="-1" aria-disabled="true">Page <b>{{ page_obj.number }}</b> of <b>{{ page_obj.paginator.num_pages }}</b></a>
+                        </li>
+                        {% if page_obj.has_next %}
+                            <li class="page-item"><a class="page-link" href="?page={{ page_obj.next_page_number }}">Next</a></li>
+                            <li class="page-item"><a class="page-link" href="?page={{ page_obj.paginator.num_pages }}">Last&raquo;</a></li>
+                        {% endif %}
+                    </ul>
+                </div>       
+            {% endif %}
+        </div>
+
+        
+        
+    <script>
+        function deletebook(id){    
+            fetch("/deletebook",{
+                method: 'POST',
+                body: JSON.stringify({
+                    id: id,
+                })
+            })
+            .then(response => response.text())
+            .then(data => {
+                alert(data)
+                document.querySelector("#my_books").click()
+            })
+        }       
+    </script>
+{% endblock %}

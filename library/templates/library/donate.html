@@ -1,0 +1,30 @@
+{% extends "library/layout.html" %}
+
+{% block body %}
+<div style = "display: flex; justify-content: center;">
+  <div style = "width: 600px;">
+    <form action="{% url 'donate' %}" method="post" enctype="multipart/form-data"> {% csrf_token %}
+        <div class="form-group">
+          <label>Title:</label>
+          <input class="form-control" type="text" name="title">         
+        </div>
+        <div class="form-group">
+          <label>Author: </label>
+          <input class="form-control" type="text" name="author">
+        </div>
+        <div class="form-group">
+            <label>Cover page:</label>
+            <input type="file" name = "cover" accept="image/*">
+            <small class="form-text text-muted">Accept image files only.</small>
+        </div>
+        <div class="form-group">
+            <label>File:</label>
+            <input type="file" name="file" accept=".pdf">
+            <small class="form-text text-muted">Accept pdf files only.</small>
+        </div>
+        <button type="submit" class="btn btn-primary">Donate</button>
+    </form>
+  </div>
+</div>
+    
+{% endblock %}

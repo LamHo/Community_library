@@ -1,0 +1,39 @@
+{% extends "library/layout.html" %}
+
+{% block body %}
+
+    {% if found_books %}
+        <h2><i>Search result for "<b>{{content}}"</b>:</i></h2>
+        {% for book in found_books %}
+            
+            <div class = "book" style = "border-style: solid; border-width: 0.5px" >
+                <div class = "cover-left">
+                    {% if book.cover_image is None %}
+                        <img src="" alt="book's image">
+                    {% else %}
+                        <img src="{{book.cover_image.url}}" alt="book's image" style = "height: 148px; width: 120px;">
+                    {% endif %}    
+                     
+                </div>  
+                
+                <div class = "info-right">
+                    <div class = "info">
+                        <h3 style = "color: blue">{{book.title}} </h3>
+                        <b>Author: </b>{{book.author}} <br>
+                    </div>
+                    <div class = buttons>
+                        <a href = "{{book.file.url}}" download><button class="btn"><i class="fa fa-download"></i> Download</button></a>
+                        
+                    </div>
+                </div>
+                    
+            </div>            
+                   
+            <br>        
+    
+        {% endfor %}  
+    {% else %}
+        <h2><i>No books found for "<b>{{content}}"</b></i></h2>
+    {% endif %}
+
+{% endblock %}
